@@ -1,0 +1,47 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package bookPosition;
+
+import com.qaant.optionModels.QAbstractModel;
+import com.qaant.structures.Qoption;
+
+
+/**
+ *
+ * @author pauli
+ */
+public class Qticket extends Qoption{
+    private QAbstractModel option;
+    private double lots;
+    private double price;
+    private double multiplier;
+  
+    private double[][] PLOutput;
+    
+    public Qticket(){}
+   
+    public Qticket(QAbstractModel option,double lots, double price, double multiplier, int nodes){
+        super(option.getTipoContrato(),option.getUnderlyingValue(),option.getUnderlyingHistVlt(),option.getDividendRate() ,option.getCallPut(), option.getStrike(),option.getDaysToExpiration(),option.getTasa(),option.getOptionMktValue(),option.getModelSteps(),nodes);
+        this.option =option;
+        this.lots   =lots;
+        this.price  =price;
+        this.multiplier=multiplier;
+       // build();
+    
+    }
+   
+    private void build(){}
+    
+    public double[][] getPLOutput(){
+        PLOutput = new double [1][nodes+1];
+        for (int i=0;i<nodes+1;i++){
+            option.setOptionUndValue(undPriceRange[0][i]);
+            PLOutput[0][i]=(option.getPrima()-price)*lots*multiplier;
+        
+        }
+        return PLOutput;
+    }
+}
