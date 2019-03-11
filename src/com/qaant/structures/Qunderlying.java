@@ -5,6 +5,8 @@
  */
 package com.qaant.structures;
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  *
  * @author Paulino
@@ -16,7 +18,7 @@ public class Qunderlying {
     protected final static char FUTURES='F';
     
     protected char  tipoContrato; //'S': Stock 'F':Futuro
-    protected String ticker,ISIN;
+    private String ticker,ISIN;
     protected String underlyingName;
     protected double underlyingValue;
     protected double underlyingHistVolatility;
@@ -24,12 +26,11 @@ public class Qunderlying {
     
     protected int nodes=1;
     protected double[][] undPriceRange;//   = new double [1][step+1];
-    private double ratioLog,max, min,coeficiente, center,Dstd=3;
-    private double daysToProject=30;
-    
-    
+    private double Dstd=3;
+
+
     public Qunderlying(){buildPriceRange();}   
-    public Qunderlying(Qunderlying und){
+    public Qunderlying(@NotNull Qunderlying und){
         this.tipoContrato               =und.tipoContrato;
         this.underlyingValue            =und.underlyingValue;
         this.underlyingHistVolatility   =und.underlyingHistVolatility;
@@ -69,13 +70,14 @@ public class Qunderlying {
     }
     private void buildPriceRange(){
         undPriceRange   = new double [1][nodes+1];
-        
-        center       = this.underlyingValue;
-        coeficiente  = Math.sqrt(daysToProject/365.0)*this.underlyingHistVolatility;
-        min          = center*Math.exp(coeficiente *-Dstd);
-        max          = center*Math.exp(coeficiente *Dstd);
-        ratioLog     = Math.exp(Math.log(max/min)/nodes);
-        for (int i=0;i<nodes+1;i++){undPriceRange[0][i]=min*Math.pow(ratioLog,i);}
+
+        double center = this.underlyingValue;
+        double daysToProject = 30;
+        double coeficiente = Math.sqrt(daysToProject / 365.0) * this.underlyingHistVolatility;
+        double min = center * Math.exp(coeficiente * -Dstd);
+        double max = center * Math.exp(coeficiente * Dstd);
+        double ratioLog = Math.exp(Math.log(max / min) / nodes);
+        for (int i=0;i<nodes+1;i++){undPriceRange[0][i]= min *Math.pow(ratioLog,i);}
     }
     
     public double[][] getUnderlyingPriceRange(){
@@ -106,7 +108,7 @@ public class Qunderlying {
     }
     
     public String getUnderlyingString(){
-        String builder = "Ticker " +
+        return "Ticker " +
                 ticker +
                 " Tipo Contrato " +
                 tipoContrato +
@@ -117,6 +119,5 @@ public class Qunderlying {
                 " Dividend Rate: " +
                 dividendRate +
                 "-";
-        return builder;
     }
 }

@@ -10,7 +10,7 @@ package com.qaant.structures;
  * @author pauli
  */
 public class Qoption extends Qunderlying{
-    protected enum TipoOpcion {CALL,PUT}
+   // protected enum TipoOpcion {CALL,PUT}
 
     protected final static char CALL='C';
     protected final static char PUT='P';
@@ -74,7 +74,7 @@ public class Qoption extends Qunderlying{
         this.optionMktValue     =optionMktValue;
         this.volatModel         =underlyingHistVolatility;
         this.steps              =steps;
-     
+        this.nodes              =nodes;
     }
         
     public double getDaysToExpiration(){

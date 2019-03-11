@@ -5,6 +5,7 @@
  */
 package com.qaant.optionModels;
 
+import com.qaant.Qinterfaces.QOptionable;
 import org.apache.commons.math3.distribution.NormalDistribution;
 import com.qaant.structures.Qunderlying;
 
@@ -12,7 +13,7 @@ import com.qaant.structures.Qunderlying;
  *
  * @author pauli
  */
-public class QWhaley extends QAbstractModel implements QOptionable{
+public class QWhaley extends QAbstractModel implements QOptionable {
     
     static {modelMap.put(2,"Whaley Barone Adesi- QAANT");}
     

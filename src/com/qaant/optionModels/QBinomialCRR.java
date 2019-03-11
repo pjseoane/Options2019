@@ -5,6 +5,7 @@
  */
 package com.qaant.optionModels;
 
+import com.qaant.Qinterfaces.QOptionable;
 import com.qaant.structures.Qunderlying;
 
 
@@ -12,7 +13,7 @@ import com.qaant.structures.Qunderlying;
  *
  * @author pauli
  */
-public class QBinomialCRR extends QBinomialJRudd implements QOptionable{
+public class QBinomialCRR extends QBinomialJRudd implements QOptionable {
     static {modelMap.put(3,"Binomial CRR- QAANT");}
    
     

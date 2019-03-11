@@ -6,7 +6,7 @@
 package com.qaant.threadModels;
 
 import com.qaant.optionModels.QImpliedVolCalc;
-import com.qaant.optionModels.QOptionable;
+import com.qaant.Qinterfaces.QOptionable;
 import com.qaant.structures.Qoption;
 import com.qaant.structures.Qunderlying;
 import java.util.HashMap;
@@ -22,40 +22,36 @@ TGenericModel extends Qoption implements QOptionable,Runnable{
     protected char tipoEjercicio;
     enum TipoEjercicio {AMERICAN,EUROPEAN}
             
-    public final static char EUROPEAN='E';
-    public final static char AMERICAN='A';
-    protected long startTime, elapsedTime;
-    protected double dayYear, sqrDayYear,payoff,z,underlyingNPV, interv;
-    protected double prima=-2,delta=-2,gamma=-2,vega=-2,theta=-2,rho=-2,impliedVol=0;
-    protected int cpFlag, modelNumber;
-    protected boolean opcionConVida;
-    protected String pModelName;
-    protected double[][] derivativesArray = new double[1][10];
-    
-     //Para calculos de implied vol
-    protected int MAXITERATIONS =50;
-    protected double ACCURACY   =0.00009;
-    
-    public static final HashMap<Integer, String> modelMap =new HashMap<>();   
+    final static char EUROPEAN='E';
+    final static char AMERICAN='A';
+    long startTime, elapsedTime;
+    double dayYear, sqrDayYear,z,underlyingNPV, interv;
+    double prima=-2,delta=-2,gamma=-2,vega=-2,theta=-2,rho=-2,impliedVol=0;
+    int cpFlag, modelNumber;
+    boolean opcionConVida;
+    private String pModelName;
+    private double[][] derivativesArray = new double[1][10];
+
+    public static final HashMap<Integer, String> modelMap =new HashMap<>();
     
 
     //Constructor 0:
-    public TGenericModel() {build();}
+    TGenericModel() {build();}
     
     //Constructor 1:
-    public TGenericModel (Qunderlying und, char callPut, double strike,double daysToExpiration,double rate,double optionMktValue){
+    TGenericModel(Qunderlying und, char callPut, double strike, double daysToExpiration, double rate, double optionMktValue){
         super(und, callPut, strike,daysToExpiration,rate, optionMktValue);
         build();
     }
     
     //Constructor 2:
-     public TGenericModel (char tipoContrato, double underlyingValue,double underlyingHistVolatility,double dividendRate,char callPut, double strike,double daysToExpiration,double rate,double optionMktValue){
+    TGenericModel(char tipoContrato, double underlyingValue, double underlyingHistVolatility, double dividendRate, char callPut, double strike, double daysToExpiration, double rate, double optionMktValue){
         super(tipoContrato, underlyingValue, underlyingHistVolatility, dividendRate,callPut, strike,daysToExpiration,rate, optionMktValue);
         build();
     }
      
     //Constructor 3:
-    public TGenericModel (char tipoEjercicio, char tipoContrato, double underlyingValue,double underlyingHistVolatility,double dividendRate,char callPut, double strike,double daysToExpiration,double rate,double optionMktValue,int steps){
+    TGenericModel(char tipoEjercicio, char tipoContrato, double underlyingValue, double underlyingHistVolatility, double dividendRate, char callPut, double strike, double daysToExpiration, double rate, double optionMktValue, int steps){
         super(tipoContrato, underlyingValue, underlyingHistVolatility, dividendRate,callPut, strike,daysToExpiration,rate, optionMktValue,steps);
         this.tipoEjercicio              =tipoEjercicio;
         build();
@@ -63,7 +59,7 @@ TGenericModel extends Qoption implements QOptionable,Runnable{
     
     
     //Constructor 4:
-    public TGenericModel (char tipoEjercicio,Qunderlying und, char callPut, double strike,double daysToExpiration,double rate,double optionMktValue,int steps){
+    TGenericModel(char tipoEjercicio, Qunderlying und, char callPut, double strike, double daysToExpiration, double rate, double optionMktValue, int steps){
         super(und, callPut, strike,daysToExpiration,rate, optionMktValue,steps);
         this.tipoEjercicio              =tipoEjercicio;
         build();
@@ -80,7 +76,7 @@ TGenericModel extends Qoption implements QOptionable,Runnable{
         this.opcionConVida        =daysToExpiration>0;
         this.z                    =Math.exp(-rate*dayYear/steps);
         this.underlyingNPV        =underlyingValue*Math.exp(-dividendRate*dayYear); 
-        this.cpFlag               =(callPut==CALL)?1:-1;
+      //  this.cpFlag               =(callPut==CALL)?1:-1;
         
        
     }// end of build()
@@ -119,10 +115,10 @@ TGenericModel extends Qoption implements QOptionable,Runnable{
     
     
     //Getters
-    public int getModelSteps(){
+    int getModelSteps(){
         return steps;
     }
-    public double getIntrinsicValue(){
+    protected double getIntrinsicValue(){
         
         return Math.max((underlyingValue - strike)*cpFlag,0);
     }
@@ -134,34 +130,32 @@ TGenericModel extends Qoption implements QOptionable,Runnable{
     }
     public double[][] getDerivativesArray(){return derivativesArray;}
     public String getOptionString(){
-        StringBuilder builder =new StringBuilder();
         // builder.append("Ticker-");
         //builder.append(anUnderlying.getTicker());
-        builder.append(modelNumber);
-        builder.append("-");
-        builder.append(pModelName);
-        builder.append("/Option->");
-        builder.append(callPut);
-        builder.append("/strike->");
-        builder.append(strike);
-        builder.append("/prima->");
-        builder.append(prima);
-        builder.append("/delta->");
-        builder.append(delta);
-        builder.append("/gamma->");
-        builder.append(gamma);
-        builder.append("/vega->");
-        builder.append(vega);
-        builder.append("/theta->");
-        builder.append(theta);
-        builder.append("/rho->");
-        builder.append(rho);
-        builder.append("/optionMktValue->");
-        builder.append(optionMktValue);
-        builder.append("/impVlt->");
-        builder.append(volatModel);
-        builder.append("z");
-        return builder.toString();
+        return String.valueOf(modelNumber) +
+                "-" +
+                pModelName +
+                "/Option->" +
+                callPut +
+                "/strike->" +
+                strike +
+                "/prima->" +
+                prima +
+                "/delta->" +
+                delta +
+                "/gamma->" +
+                gamma +
+                "/vega->" +
+                vega +
+                "/theta->" +
+                theta +
+                "/rho->" +
+                rho +
+                "/optionMktValue->" +
+                optionMktValue +
+                "/impVlt->" +
+                volatModel +
+                "z";
     }//end getString
     @Override
     public String getModelName(){return pModelName;}
@@ -210,9 +204,13 @@ TGenericModel extends Qoption implements QOptionable,Runnable{
             }
         //definicion de funcion para mandar a algo de impVlt (la dif entre valor mercado y valor teorico, buscamos que sea cero)      
         DoubleUnaryOperator difFunc = xVlt-> optionMktValue - modelGetPrima(xVlt);
-       // impliedVol= QImpliedVolCalc.bisection(difFunc, volMin, volMax, MAXITERATIONS, ACCURACY);
-       // impliedVol= QImpliedVolCalc.ivNewton(difFunc, volatModel, vega, MAXITERATIONS,  ACCURACY);
-        impliedVol= QImpliedVolCalc.turboNewton(difFunc, volatModel, vega, MAXITERATIONS,  ACCURACY);        
+        //Para calculos de implied vol
+        int MAXITERATIONS = 50;
+        double ACCURACY = 0.00009;
+
+        // impliedVol= QImpliedVolCalc.bisection(difFunc, volMin, volMax, MAXITERATIONS, ACCURACY);
+        // impliedVol= QImpliedVolCalc.ivNewton(difFunc, volatModel, vega, MAXITERATIONS,  ACCURACY);
+        impliedVol= QImpliedVolCalc.turboNewton(difFunc, volatModel, vega, MAXITERATIONS, ACCURACY);
               
         }
         //System.out.println("Implied Vol   :"+impliedVol);

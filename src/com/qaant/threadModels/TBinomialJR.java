@@ -20,7 +20,9 @@ public class TBinomialJR extends TGenericModel implements Runnable{
     protected double[][]undTree,optTree,underlyingTree;
       
     
-    public TBinomialJR(){};
+    public TBinomialJR(){
+        super();
+    };
     public TBinomialJR(char tipoEjercicio, Qunderlying und,char callPut, double strike,double daysToExpiration,double rate,double optionMktValue,int steps){
        super(tipoEjercicio,und, callPut, strike,daysToExpiration,rate, optionMktValue,steps);
     }

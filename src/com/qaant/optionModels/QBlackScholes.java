@@ -7,6 +7,7 @@
 package com.qaant.optionModels;
 
 
+import com.qaant.Qinterfaces.QOptionable;
 import org.apache.commons.math3.distribution.NormalDistribution;
 import com.qaant.structures.Qunderlying;
 
@@ -14,7 +15,7 @@ import com.qaant.structures.Qunderlying;
  *
  * @author pseoane Modelo OK, chequeado valores aca: http://www.math.drexel.edu/~pg/fin/VanillaCalculator.html
  */
-public class QBlackScholes extends QAbstractModel implements QOptionable{
+public class QBlackScholes extends QAbstractModel implements QOptionable {
     
     
     static {modelMap.put(1,"Black Scholes -QAANT");}
