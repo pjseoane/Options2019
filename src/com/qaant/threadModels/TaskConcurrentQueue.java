@@ -10,6 +10,7 @@ public class TaskConcurrentQueue {
         private volatile int threadsCompleted; // how many threads have finished?
         private volatile boolean running = true;
         private WorkerThread[] workers;
+        private int threadCount =20;
 
         public TaskConcurrentQueue(){}
 
@@ -18,12 +19,15 @@ public class TaskConcurrentQueue {
                 try {
                     while (running) {
                         Runnable task = taskQueue.poll(); // Get a task from the queue.
+                        System.out.println("Running task: " );
+
                         if (task == null)
                             break; // (because the queue is empty)
                         task.run(); // Execute the task;
                     }
                 } finally {
                     threadFinished(); // Records fact that this thread has terminated.
+                    System.out.println("thread Finished");
                 }
             }
 
@@ -32,7 +36,7 @@ public class TaskConcurrentQueue {
 
         public void startQueue() {
 
-            int threadCount =20;
+
             workers = new WorkerThread[threadCount];
             running = true;
             for (int i = 0; i < threadCount; i++) {
@@ -46,8 +50,16 @@ public class TaskConcurrentQueue {
 
             }
         }
-        public void stop(){
-            running=false;
+        public void endQueue(){
+
+          //  running=false;
+            for (int i = 0; i < threadCount; i++) {
+                try{
+                workers[i].join();
+                 } catch (InterruptedException e) {
+                }
+            }
+
         }
 
         synchronized private void threadFinished() {

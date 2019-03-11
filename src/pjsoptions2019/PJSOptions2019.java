@@ -273,8 +273,14 @@ public class PJSOptions2019 {
 
         //**********************************************
         startTime = System.currentTimeMillis();
+        arrayListOptions.clear();
 
-        arrayListOptions.add(JRAC);
+        for (int i=0;i<10;i++) {
+            TBinomialJR JRAP2=new TBinomialJR('A', someStock, 'P', X, days, riskFreeRate, mktValue, steps);
+            arrayListOptions.add(JRAP2);
+        }
+
+        /*
         arrayListOptions.add(JRAP);
         arrayListOptions.add(JREP);
         arrayListOptions.add(tOpt4);
@@ -285,15 +291,16 @@ public class PJSOptions2019 {
             arrayListOption.setOptionUndValue(101.0);
             arrayListOption.run();
         }
-
+         */
 
         TaskConcurrentQueue tcQueue = new TaskConcurrentQueue();
         tcQueue.taskQueue.addAll(arrayListOptions);
         tcQueue.startQueue();
-
+       //  tcQueue.endQueue();
         for (TGenericModel arrayListOption : arrayListOptions) {
             System.out.println("Queue-Thread:" + Arrays.toString(arrayListOption.getDerivativesArray()[0]));
         }
+
          System.out.println("\nElapsed Time Total           :" + (System.currentTimeMillis() - startTime));
     }//end Main
 

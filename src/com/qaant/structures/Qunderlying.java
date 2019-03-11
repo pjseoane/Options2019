@@ -5,7 +5,7 @@
  */
 package com.qaant.structures;
 
-import org.jetbrains.annotations.NotNull;
+//import org.jetbrains.annotations.NotNull;
 
 /**
  *
@@ -30,7 +30,7 @@ public class Qunderlying {
 
 
     public Qunderlying(){buildPriceRange();}   
-    public Qunderlying(@NotNull Qunderlying und){
+    public Qunderlying(Qunderlying und){
         this.tipoContrato               =und.tipoContrato;
         this.underlyingValue            =und.underlyingValue;
         this.underlyingHistVolatility   =und.underlyingHistVolatility;
