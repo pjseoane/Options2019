@@ -32,7 +32,7 @@ public class TaskConcurrentQueue {
 
         public void startQueue() {
 
-            int threadCount = 20;
+            int threadCount =20;
             workers = new WorkerThread[threadCount];
             running = true;
             for (int i = 0; i < threadCount; i++) {
