@@ -38,9 +38,9 @@ public class TBinomialCRR extends TBinomialJR implements Runnable{
         }else{
             opcionSinVida();
         }
-    impliedVol=calcImpliedVlt();
-    fillDerivativesArray();
-        
+    endRun();
+        //impliedVol=calcImpliedVlt();
+        //fillDerivativesArray();
     }    
       
     private void opcionConVida(){

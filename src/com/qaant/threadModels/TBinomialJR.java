@@ -41,8 +41,9 @@ public class TBinomialJR extends TGenericModel implements Runnable{
             opcionSinVida();
         }
       
-    impliedVol=calcImpliedVlt();
-    fillDerivativesArray();
+   endRun();
+        //impliedVol=calcImpliedVlt();
+        //fillDerivativesArray();
     }
     
     private void opcionConVida(){

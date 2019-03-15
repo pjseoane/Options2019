@@ -38,8 +38,9 @@ public class TBlackScholes extends TGenericModel implements Runnable{
         }else{
             opcionSinVida();
         }
-        impliedVol=calcImpliedVlt();
-        fillDerivativesArray(); 
+        endRun();
+        //impliedVol=calcImpliedVlt();
+        //fillDerivativesArray();
     }
     private void opcionConVida(){
                
@@ -70,7 +71,7 @@ public class TBlackScholes extends TGenericModel implements Runnable{
               
             case CALL: 
                 prima   = underlyingValue*Math.exp(-q*dayYear) * CNDFd1 - z * strike*CNDFd2;
-		delta   = Math.exp(-q*dayYear)*CNDFd1;
+		        delta   = Math.exp(-q*dayYear)*CNDFd1;
                 theta   = (-(underlyingNPV*drift*volatModel*PDFd1 / (2 * sqrDayYear)) - strike*1*rate*CNDFd2)/(365);
                
                 rho     = z*dayYear*(strike*CNDFd2-x*underlyingNPV*CNDFd1) / 100;
@@ -80,9 +81,9 @@ public class TBlackScholes extends TGenericModel implements Runnable{
                 double CNDF_d1=new NormalDistribution().cumulativeProbability(-d1);
                 double CNDF_d2=new NormalDistribution().cumulativeProbability(-d2);
                 
-		prima = -underlyingValue*Math.exp(-q*dayYear) * CNDF_d1 + z * strike*CNDF_d2;
-		delta = Math.exp(-q*dayYear)*(CNDFd1 - 1);
-		theta = (-(underlyingNPV*drift*volatModel*PDFd1 / (2 * sqrDayYear)) + strike*1*rate*CNDF_d2)/365;
+		        prima = -underlyingValue*Math.exp(-q*dayYear) * CNDF_d1 + z * strike*CNDF_d2;
+		        delta = Math.exp(-q*dayYear)*(CNDFd1 - 1);
+		        theta = (-(underlyingNPV*drift*volatModel*PDFd1 / (2 * sqrDayYear)) + strike*1*rate*CNDF_d2)/365;
                 rho   = -z*dayYear*(strike*CNDF_d2-x*underlyingNPV*CNDF_d1) / 100;
                 break;
             

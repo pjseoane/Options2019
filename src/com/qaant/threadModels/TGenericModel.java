@@ -5,7 +5,6 @@
  */
 package com.qaant.threadModels;
 
-import com.qaant.optionModels.QImpliedVolCalc;
 import com.qaant.Qinterfaces.QOptionable;
 import com.qaant.structures.Qoption;
 import com.qaant.structures.Qunderlying;
@@ -30,11 +29,11 @@ TGenericModel extends Qoption implements QOptionable,Runnable{
     final static char AMERICAN='A';
     long startTime, elapsedTime;
     double dayYear, sqrDayYear,z,underlyingNPV, interv;
-    double prima=-2,delta=-2,gamma=-2,vega=-2,theta=-2,rho=-2,impliedVol=0;
+    double prima=-2,delta=-2,gamma=-2,vega=-2,theta=-2,rho=-2,impliedVol=0,finalArray=0;
     int cpFlag, modelNumber;
     boolean opcionConVida;
     private String pModelName;
-    private double[][] derivativesArray = new double[1][10];
+    private double[][] derivativesArray = new double[1][12];
 
     public static final HashMap<Integer, String> modelMap =new HashMap<>();
     
@@ -86,7 +85,12 @@ TGenericModel extends Qoption implements QOptionable,Runnable{
     }// end of build()
     @Override
     abstract public void run(); //Cada modelo implementa runModel()
-    
+
+    protected void endRun(){
+         impliedVol=calcImpliedVlt();
+         fillDerivativesArray();
+         //System.out.println("Derivatives Array: " + Arrays.toString(getDerivativesArray()[0]));
+    }
 
 
 //Setters
@@ -193,30 +197,32 @@ TGenericModel extends Qoption implements QOptionable,Runnable{
         }
     
     protected double calcImpliedVlt(){
-    impliedVol=volatModel;
+        finalArray=0;
+        impliedVol=volatModel;
             
         if(optionMktValue>0 && opcionConVida && strike!=0){
             double volMin;
             double volMax;
         
-        if(prima<=optionMktValue){
-           volMin=volatModel;
-           volMax=volMin*3;
+            if(prima<=optionMktValue){
+                volMin=volatModel;
+                volMax=volMin*3;
             }else{
                 volMin=volatModel/3;
                 volMax=volatModel;
             }
-        //definicion de funcion para mandar a algo de impVlt (la dif entre valor mercado y valor teorico, buscamos que sea cero)      
-        DoubleUnaryOperator difFunc = xVlt-> optionMktValue - modelGetPrima(xVlt);
-        //Para calculos de implied vol
-        int MAXITERATIONS = 50;
-        double ACCURACY = 0.00009;
+            //definicion de funcion para mandar a algo de impVlt (la dif entre valor mercado y valor teorico, buscamos que sea cero)
+            DoubleUnaryOperator difFunc = xVlt-> optionMktValue - modelGetPrima(xVlt);
+            //Para calculos de implied vol
+            int MAXITERATIONS = 50;
+            double ACCURACY = 0.00009;
 
-        // impliedVol= QImpliedVolCalc.bisection(difFunc, volMin, volMax, MAXITERATIONS, ACCURACY);
-        // impliedVol= QImpliedVolCalc.ivNewton(difFunc, volatModel, vega, MAXITERATIONS,  ACCURACY);
-        impliedVol= QImpliedVolCalc.turboNewton(difFunc, volatModel, vega, MAXITERATIONS, ACCURACY);
-              
+            // impliedVol= QImpliedVolCalc.bisection(difFunc, volMin, volMax, MAXITERATIONS, ACCURACY);
+            // impliedVol= QImpliedVolCalc.ivNewton(difFunc, volatModel, vega, MAXITERATIONS,  ACCURACY);
+            impliedVol= QImpliedVolCalc.turboNewton(difFunc, volatModel, vega, MAXITERATIONS, ACCURACY);
+            finalArray=1;
         }
+
         //System.out.println("Implied Vol   :"+impliedVol);
     return impliedVol;
     }
@@ -247,6 +253,7 @@ TGenericModel extends Qoption implements QOptionable,Runnable{
         derivativesArray[0][7]=impliedVol;
         derivativesArray[0][8]=System.currentTimeMillis() - startTime;
         derivativesArray[0][9]=modelNumber;
+        derivativesArray[0][11]=finalArray;
       //  System.out.println("Derivatives Array:" + Arrays.toString(derivativesArray[0]));
       //  arrayListDerivatives.add(derivativesArray[0]);
     }
