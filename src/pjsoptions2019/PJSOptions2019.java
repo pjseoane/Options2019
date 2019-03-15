@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import static com.qaant.threadModels.TGenericModel.arrayListDerivatives;
+
 public class PJSOptions2019 {
 
     /**
@@ -300,6 +302,12 @@ public class PJSOptions2019 {
         for (TGenericModel arrayListOption : arrayListOptions) {
             System.out.println("Queue-Thread:" + Arrays.toString(arrayListOption.getDerivativesArray()[0]));
         }
+
+        /*
+        for (double[] arrayDerivative: arrayListDerivatives) {
+            System.out.println (Arrays.toString(arrayDerivative));
+        }
+        */
 
          System.out.println("\nElapsed Time Total           :" + (System.currentTimeMillis() - startTime));
     }//end Main

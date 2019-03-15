@@ -9,6 +9,9 @@ import com.qaant.optionModels.QImpliedVolCalc;
 import com.qaant.Qinterfaces.QOptionable;
 import com.qaant.structures.Qoption;
 import com.qaant.structures.Qunderlying;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.function.DoubleUnaryOperator;
 
@@ -18,7 +21,8 @@ import java.util.function.DoubleUnaryOperator;
  */
 public abstract class
 TGenericModel extends Qoption implements QOptionable,Runnable{
-    
+    public static final ArrayList<double[]> arrayListDerivatives = new ArrayList<>();
+
     protected char tipoEjercicio;
     enum TipoEjercicio {AMERICAN,EUROPEAN}
             
@@ -243,6 +247,7 @@ TGenericModel extends Qoption implements QOptionable,Runnable{
         derivativesArray[0][7]=impliedVol;
         derivativesArray[0][8]=System.currentTimeMillis() - startTime;
         derivativesArray[0][9]=modelNumber;
-    
+      //  System.out.println("Derivatives Array:" + Arrays.toString(derivativesArray[0]));
+      //  arrayListDerivatives.add(derivativesArray[0]);
     }
 }
