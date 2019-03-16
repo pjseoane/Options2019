@@ -39,8 +39,7 @@ public class TBlackScholes extends TGenericModel implements Runnable{
             opcionSinVida();
         }
         endRun();
-        //impliedVol=calcImpliedVlt();
-        //fillDerivativesArray();
+
     }
     private void opcionConVida(){
                

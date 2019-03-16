@@ -124,7 +124,8 @@ public class QImpliedVolCalc
   
   public static double turboNewton(DoubleUnaryOperator func, double vol, double vega,
                                int maxIterations, double tolerance){
-      double iv=vol;
+        //System.out.println("Entrada en TurboNewton : Vega "+vega+" Vol "+vol);
+        double iv=vol;
       double ivAnt=vol;
       double dif=func.applyAsDouble(iv);
       double a,b;
@@ -132,7 +133,8 @@ public class QImpliedVolCalc
       for(int i=0;i<3;i++){
           ivAnt=iv;
           iv +=(dif/vega/100);
-          dif=func.applyAsDouble(iv);    
+          dif=func.applyAsDouble(iv);
+          //System.out.println("Dif :"+dif);
       }
       
       if (iv<=ivAnt){
@@ -142,7 +144,7 @@ public class QImpliedVolCalc
           a=ivAnt;
           b=iv;
       }
-     // System.out.println("a y b antes de entrar a biseccion "+" "+a+" "+b);
+      //System.out.println("a y b antes de entrar a biseccion "+" "+a+" "+b);
       return (bisection(func, a, b,maxIterations, tolerance));
     }
 }

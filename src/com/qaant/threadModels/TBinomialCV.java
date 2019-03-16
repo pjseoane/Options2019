@@ -42,8 +42,7 @@ public class TBinomialCV extends TGenericModel implements Runnable{
         }
       
     endRun();
-        //impliedVol=calcImpliedVlt();
-        //fillDerivativesArray();
+
     }
     
     private void opcionConVida(){

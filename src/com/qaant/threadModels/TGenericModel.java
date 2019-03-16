@@ -29,7 +29,7 @@ TGenericModel extends Qoption implements QOptionable,Runnable{
     final static char AMERICAN='A';
     long startTime, elapsedTime;
     double dayYear, sqrDayYear,z,underlyingNPV, interv;
-    double prima=-2,delta=-2,gamma=-2,vega=-2,theta=-2,rho=-2,impliedVol=0,finalArray=0;
+    double prima=-2,delta=-2,gamma=-2,vega=-2,theta=-2,rho=-2,impliedVol=0;
     int cpFlag, modelNumber;
     boolean opcionConVida;
     private String pModelName;
@@ -197,10 +197,11 @@ TGenericModel extends Qoption implements QOptionable,Runnable{
         }
     
     protected double calcImpliedVlt(){
-        finalArray=0;
+
         impliedVol=volatModel;
-            
+
         if(optionMktValue>0 && opcionConVida && strike!=0){
+           // finalArray=0;
             double volMin;
             double volMax;
         
@@ -220,7 +221,7 @@ TGenericModel extends Qoption implements QOptionable,Runnable{
             // impliedVol= QImpliedVolCalc.bisection(difFunc, volMin, volMax, MAXITERATIONS, ACCURACY);
             // impliedVol= QImpliedVolCalc.ivNewton(difFunc, volatModel, vega, MAXITERATIONS,  ACCURACY);
             impliedVol= QImpliedVolCalc.turboNewton(difFunc, volatModel, vega, MAXITERATIONS, ACCURACY);
-            finalArray=1;
+          //  finalArray=1;
         }
 
         //System.out.println("Implied Vol   :"+impliedVol);
@@ -253,8 +254,11 @@ TGenericModel extends Qoption implements QOptionable,Runnable{
         derivativesArray[0][7]=impliedVol;
         derivativesArray[0][8]=System.currentTimeMillis() - startTime;
         derivativesArray[0][9]=modelNumber;
-        derivativesArray[0][11]=finalArray;
+      //  derivativesArray[0][11]=finalArray;
       //  System.out.println("Derivatives Array:" + Arrays.toString(derivativesArray[0]));
-      //  arrayListDerivatives.add(derivativesArray[0]);
+        //A continuacion se guardan los arrays finales (no los intermedios que se usan en calculo de v imp)
+        if(optionMktValue>-1) {
+            arrayListDerivatives.add(derivativesArray[0]);
+        }
     }
 }

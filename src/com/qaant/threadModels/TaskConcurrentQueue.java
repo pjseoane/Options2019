@@ -1,6 +1,9 @@
 package com.qaant.threadModels;
 
+import java.util.Arrays;
 import java.util.concurrent.ConcurrentLinkedQueue;
+
+import static com.qaant.threadModels.TGenericModel.arrayListDerivatives;
 
 public class TaskConcurrentQueue {
 
@@ -12,6 +15,7 @@ public class TaskConcurrentQueue {
         private WorkerThread[] workers;
         private int threadCount =20;
         private  int t=0;
+        private long startTime;
 
         public TaskConcurrentQueue(){}
 
@@ -25,7 +29,7 @@ public class TaskConcurrentQueue {
                         if (task == null)
                             break; // (because the queue is empty)
                          t++;
-                         System.out.println("Running task: "+t );
+                        // System.out.println("Running task: "+t );
                         task.run(); // Execute the task;
 
                     }
@@ -37,8 +41,8 @@ public class TaskConcurrentQueue {
         }//end class WorkerThread
 
 
-        public void startQueue() {
-
+        public void startQueueWorkers() {
+            startTime = System.currentTimeMillis();
             workers = new WorkerThread[threadCount];
             running = true;
             threadsCompleted = 0;  // Records how many of the threads have terminated.
@@ -53,29 +57,26 @@ public class TaskConcurrentQueue {
                 workers[i].start();
 
             }
-        }
-        public void endQueue(){
 
-          //  running=false;
-            for (int i = 0; i < threadCount; i++) {
-                try{
-                  //  if (workers[i].isAlive()) {
-                        workers[i].join();
-                  //  }
-                } catch (InterruptedException e) {
-                }
-            }
 
         }
+
 
         synchronized private void threadFinished() {
         threadsCompleted++;
         if (threadsCompleted == workers.length) { // all threads have finished
            // startButton.setText("Start Again");
            // startButton.setEnabled(true);
-            System.out.println("threads Finished");
+            System.out.println("Threads Finished");
             running = false; // Make sure running is false after the thread ends.
             workers = null;
+
+            for (double[] arrayDerivative: arrayListDerivatives) {
+            System.out.println ("Derivatives Array: "+ Arrays.toString(arrayDerivative));
+
+            }
+             System.out.println("\nElapsed Time Total           :" + (System.currentTimeMillis() - startTime));
+
            // threadCountSelect.setEnabled(true); // re-enable pop-up menu
         }
     }

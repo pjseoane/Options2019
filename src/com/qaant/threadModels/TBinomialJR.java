@@ -42,8 +42,7 @@ public class TBinomialJR extends TGenericModel implements Runnable{
         }
       
    endRun();
-        //impliedVol=calcImpliedVlt();
-        //fillDerivativesArray();
+
     }
     
     private void opcionConVida(){
@@ -87,8 +86,12 @@ public class TBinomialJR extends TGenericModel implements Runnable{
             
                 
                 worker1.start();
+                //System.out.println("Worker1 Theta Started");
                 worker2.start();
+                //System.out.println("Worker2 Vega Started");
                 worker3.start();
+                //System.out.println("Worker3 Rho Started");
+
             
                 try{
                     worker1.join();
