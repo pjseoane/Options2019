@@ -43,6 +43,7 @@ public class TaskConcurrentQueue {
 
         public void startQueueWorkers() {
             startTime = System.currentTimeMillis();
+            arrayListDerivatives.clear();
             workers = new WorkerThread[threadCount];
             running = true;
             threadsCompleted = 0;  // Records how many of the threads have terminated.
@@ -72,10 +73,10 @@ public class TaskConcurrentQueue {
             workers = null;
 
             for (double[] arrayDerivative: arrayListDerivatives) {
-            System.out.println ("Derivatives Array: "+ Arrays.toString(arrayDerivative));
+            System.out.println ("Derivatives Array in task Q: "+ Arrays.toString(arrayDerivative));
 
             }
-             System.out.println("\nElapsed Time Total           :" + (System.currentTimeMillis() - startTime));
+            System.out.println ("\nElapsed Time Total       :" + (System.currentTimeMillis() - startTime));
 
            // threadCountSelect.setEnabled(true); // re-enable pop-up menu
         }
